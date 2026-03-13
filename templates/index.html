@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>House Pricing</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <header>
+            <h1>House Pricing</h1>
+        </header>
+        <main>
+            <p>You should know that may be an error and a big error somtimes</p>
+            <form action="/" method="POST">
+                <div class="in">
+                    <label for="area">Area: </label>
+                    <input type="number" max="20000" min="1000" placeholder="4500" id="area" name="area">
+                </div>
+                <div class="in">
+                    <label for="bedrooms">Bedrooms: </label>
+                    <select id="bedrooms" name="bedrooms">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </div>
+                <div class="in">
+                    <label for="bathrooms">Bathrooms: </label>
+                    <select id="bathrooms" name="bathrooms">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                <div class="in">
+                    <label for="stories" name="stories">Stories: </label>
+                    <select id="stories" name="stories">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                <button type="submit">Predict the Price</button>
+            </form>
+            {% if result %}
+                <div>
+                    <h3>Predicted Price: {{ result }}</h3>
+                </div>
+            {% endif %}
+        </main>
+    </body>
+</html>
