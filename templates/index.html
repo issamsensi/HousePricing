@@ -1,58 +1,157 @@
 <!DOCTYPE html>
-<html lang='en'>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>House Pricing</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    </head>
-    <body>
-        <header>
-            <h1>House Pricing</h1>
-        </header>
-        <main>
-            <p>You should know that may be an error and a big error somtimes</p>
-            <form action="/" method="POST">
-                <div class="in">
-                    <label for="area">Area: </label>
-                    <input type="number" max="20000" min="1000" placeholder="4500" id="area" name="area">
-                </div>
-                <div class="in">
-                    <label for="bedrooms">Bedrooms: </label>
-                    <select id="bedrooms" name="bedrooms">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                    </select>
-                </div>
-                <div class="in">
-                    <label for="bathrooms">Bathrooms: </label>
-                    <select id="bathrooms" name="bathrooms">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-                </div>
-                <div class="in">
-                    <label for="stories" name="stories">Stories: </label>
-                    <select id="stories" name="stories">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-                </div>
-                <button type="submit">Predict the Price</button>
-            </form>
-            {% if result %}
-                <div>
-                    <h3>Predicted Price: {{ result }}</h3>
-                </div>
-            {% endif %}
-        </main>
-    </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>House Price Predictor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="bg-decoration"></div>
+
+  <main class="app-shell">
+    <section class="hero">
+      <p class="badge">Machine Learning Demo</p>
+      <h1>House Price Predictor</h1>
+      <p class="subtitle">
+        Estimate a property price from house size, amenities, and furnishing details.
+      </p>
+      <p class="disclaimer">
+        This model is educational and can have large prediction errors.
+      </p>
+    </section>
+
+    <section class="card">
+      <form action="/" method="POST" class="predict-form">
+        <div class="field">
+          <label for="area">Area (sq ft)</label>
+          <input
+            id="area"
+            name="area"
+            type="number"
+            min="200"
+            max="20000"
+            step="1"
+            placeholder="2000"
+            value="{{ form_data.area }}"
+            required
+          />
+        </div>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="bedrooms">Bedrooms</label>
+            <select id="bedrooms" name="bedrooms">
+              {% for n in range(1, 7) %}
+                <option value="{{ n }}" {% if form_data.bedrooms == n %}selected{% endif %}>{{ n }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="bathrooms">Bathrooms</label>
+            <select id="bathrooms" name="bathrooms">
+              {% for n in range(1, 5) %}
+                <option value="{{ n }}" {% if form_data.bathrooms == n %}selected{% endif %}>{{ n }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="stories">Stories</label>
+            <select id="stories" name="stories">
+              {% for n in range(1, 5) %}
+                <option value="{{ n }}" {% if form_data.stories == n %}selected{% endif %}>{{ n }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="parking">Parking Spots</label>
+            <select id="parking" name="parking">
+              {% for n in range(0, 4) %}
+                <option value="{{ n }}" {% if form_data.parking == n %}selected{% endif %}>{{ n }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="mainroad">Main Road Access</label>
+            <select id="mainroad" name="mainroad">
+              <option value="yes" {% if form_data.mainroad == 'yes' %}selected{% endif %}>Yes</option>
+              <option value="no" {% if form_data.mainroad == 'no' %}selected{% endif %}>No</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="guestroom">Guest Room</label>
+            <select id="guestroom" name="guestroom">
+              <option value="yes" {% if form_data.guestroom == 'yes' %}selected{% endif %}>Yes</option>
+              <option value="no" {% if form_data.guestroom == 'no' %}selected{% endif %}>No</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="basement">Basement</label>
+            <select id="basement" name="basement">
+              <option value="yes" {% if form_data.basement == 'yes' %}selected{% endif %}>Yes</option>
+              <option value="no" {% if form_data.basement == 'no' %}selected{% endif %}>No</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="hotwaterheating">Hot Water Heating</label>
+            <select id="hotwaterheating" name="hotwaterheating">
+              <option value="yes" {% if form_data.hotwaterheating == 'yes' %}selected{% endif %}>Yes</option>
+              <option value="no" {% if form_data.hotwaterheating == 'no' %}selected{% endif %}>No</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="airconditioning">Air Conditioning</label>
+            <select id="airconditioning" name="airconditioning">
+              <option value="yes" {% if form_data.airconditioning == 'yes' %}selected{% endif %}>Yes</option>
+              <option value="no" {% if form_data.airconditioning == 'no' %}selected{% endif %}>No</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="prefarea">Preferred Area</label>
+            <select id="prefarea" name="prefarea">
+              <option value="yes" {% if form_data.prefarea == 'yes' %}selected{% endif %}>Yes</option>
+              <option value="no" {% if form_data.prefarea == 'no' %}selected{% endif %}>No</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="furnishingstatus">Furnishing Status</label>
+          <select id="furnishingstatus" name="furnishingstatus">
+            <option value="furnished" {% if form_data.furnishingstatus == 'furnished' %}selected{% endif %}>Furnished</option>
+            <option value="semi-furnished" {% if form_data.furnishingstatus == 'semi-furnished' %}selected{% endif %}>Semi-furnished</option>
+            <option value="unfurnished" {% if form_data.furnishingstatus == 'unfurnished' %}selected{% endif %}>Unfurnished</option>
+          </select>
+        </div>
+
+        <button type="submit">Predict Price</button>
+      </form>
+
+      {% if error %}
+      <div class="result error">{{ error }}</div>
+      {% endif %}
+
+      {% if result %}
+      <div class="result success">
+        <p class="result-label">Predicted Price</p>
+        <p class="result-value">${{ '{:,}'.format(result) }}</p>
+      </div>
+      {% endif %}
+    </section>
+  </main>
+</body>
 </html>

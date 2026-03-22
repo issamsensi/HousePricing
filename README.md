@@ -1,114 +1,114 @@
-# 🏠 House Pricing Predictor
+# House Price Predictor
 
-A machine learning web application that predicts house prices based on key property features using **Linear Regression**.
+A simple end-to-end machine learning web app that predicts house prices from core property features.
 
----
+## Preview
+![House Price Predictor Demo](static/images/predict_price.png)
 
-## 📋 Overview
 
-This project uses a trained Linear Regression model on housing data to estimate the price of a house. Users can input property details through a web interface and get an instant price prediction.
+## Features
 
----
+- Predicts house price using:
+  - `area`
+  - `bedrooms`
+  - `bathrooms`
+  - `stories`
+  - `parking`
+  - `mainroad`, `guestroom`, `basement`
+  - `hotwaterheating`, `airconditioning`, `prefarea`
+  - `furnishingstatus`
+- Flask web app with a modern responsive UI
+- Auto-trains model if `model.pkl` does not exist
+- Lightweight and beginner-friendly project structure
 
-## ScreenShoot
+## Tech Stack
 
-![House Pricing Predictor](static/images/housepricing.png)
+- **Backend:** Python, Flask
+- **ML:** scikit-learn (`Pipeline`, `OneHotEncoder`, `LinearRegression`)
+- **Data:** pandas
+- **Frontend:** HTML, CSS (Jinja templates)
 
-## 🚀 Features
+## Project Structure
 
-- Predict house prices based on:
-  - **Area** (sq ft)
-  - **Number of Bedrooms**
-  - **Number of Bathrooms**
-  - **Number of Stories**
-- Simple and clean web interface
-- Real-time predictions powered by Flask
-
----
-
-## 🛠️ Tech Stack
-
-| Layer        | Technology              |
-|--------------|-------------------------|
-| Backend      | Python, Flask           |
-| ML Model     | Scikit-learn (Linear Regression) |
-| Data         | Pandas                  |
-| Frontend     | HTML, CSS               |
-
----
-
-## 📁 Project Structure
-
-```
-HousePricing/
-├── app.py              # Flask application & ML model training
-├── Housing.csv         # Dataset
-├── predict.ipynb       # Jupyter notebook for data exploration
+```text
+HousePrincing/
+├── app.py               # Flask app and prediction route
+├── train_model.py       # Model training + pickle export
+├── Housing.csv          # Dataset
+├── model.pkl            # Trained model artifact (generated)
 ├── templates/
-│   └── index.html      # Frontend UI
+│   └── index.html       # Frontend page
 ├── static/
-│   └── style.css       # Styling
-├── README.md
-└── requirements.txt     # Python dependencies
+│   └── style.css        # Frontend styles
+├── requirements.txt     # Python dependencies
+├── version 1/           # old version
+└── README.md
 ```
 
----
+## Quick Start
 
-## ⚙️ Installation & Usage
+### 1) Clone
 
-### 1. Clone the repository
 ```bash
-git clone https://github.com/issamsensi/HousePricing.git
-cd HousePricing
+git clone https://github.com/issamsensi/HousePrincing.git
+cd HousePrincing
 ```
 
-### 2. Install dependencies
+### 2) Create and activate a virtual environment (recommended)
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+### 3) Install dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Run the application
+### 4) Run the app
+
 ```bash
 python app.py
 ```
 
-### 4. Open in browser
+Open: http://127.0.0.1:5000
+
+## How it Works
+
+1. The app loads `model.pkl` at startup.
+2. If the file is missing, it runs `train_and_save()` from `train_model.py`.
+3. User submits feature values from the form.
+4. A pandas DataFrame is built and sent to the model.
+5. Predicted price is rendered in the UI.
+
+## Re-train the Model
+
+If you update `Housing.csv`, run:
+
+```bash
+python train_model.py
 ```
-http://127.0.0.1:5000
-```
 
----
+This will overwrite `model.pkl` with a new model.
 
-## ⚠️ Disclaimer
+## Notes
 
-> Predictions may have significant errors. This model is for educational purposes only and should not be used for real estate decisions.
+- Predictions can be inaccurate and should be treated as **educational output**, not real valuation advice.
+- Current model is linear and uses categorical encoding through a preprocessing pipeline.
 
----
+## Future Improvements
 
-## 📊 Dataset
+- Add model evaluation metrics (`MAE`, `RMSE`, `R²`) in the UI or logs
+- Add advanced feature engineering and non-linear models
+- Add model versioning and experiment tracking
+- Add unit tests + CI
 
-The model is trained on `Housing.csv` using the following features:
-- `area` — Total area of the house
-- `bedrooms` — Number of bedrooms
-- `bathrooms` — Number of bathrooms
-- `stories` — Number of stories
+## License
 
----
+MIT (you can add a `LICENSE` file if needed).
 
-## 🔗 Related Project
+## Author
 
-If you're interested in the data preprocessing workflow for `housing.csv`, check out this related project:  
-[Data-Mining-Tp](https://github.com/issamsensi/Data-Mining-Tp.git)
-
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 👤 Author
-
-[Issam SENSI](https://github.com/issamsensi)
-
-## Portfolio
-
-[issamsensi.com](https://issamsensi.com)
+Issam Sensi
